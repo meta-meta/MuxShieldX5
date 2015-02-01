@@ -9,7 +9,18 @@
 
 int _shiftReg[15][16];
 
-MuxShield::MuxShield(int S0, int S1, int S2, int S3, int OUTMD, int IOS1, int IOS2, int IOS3, int IOS4, int IOS5, int IOS6, int IOS7, int IOS8, int IOS9, int IOS10, int IOS11, int IOS12, int IOS13, int IOS14, int IOS15, int IO1, int IO2, int IO3)
+MuxShield::MuxShield(int S0, int S1, int S2, int S3, int OUTMD, 
+        int IOS1, int IOS2, int IOS3, 
+        int IOS4, int IOS5, int IOS6, 
+        int IOS7, int IOS8, int IOS9, 
+        int IOS10, int IOS11, int IOS12, 
+        int IOS13, int IOS14, int IOS15, 
+        int IO1, int IO2, int IO3,
+        int IO4, int IO5, int IO6,
+        int IO7, int IO8, int IO9,
+        int IO10, int IO11, int IO12,
+        int IO13, int IO14, int IO15
+        )
 {
 
     _S = {
@@ -42,7 +53,19 @@ MuxShield::MuxShield(int S0, int S1, int S2, int S3, int OUTMD, int IOS1, int IO
     _IO = {
         IO1,
         IO2,
-        IO3
+        IO3,
+        IO4,
+        IO5,
+        IO6,
+        IO7,
+        IO8,
+        IO9,
+        IO10,
+        IO11,
+        IO12,
+        IO13,
+        IO14,
+        IO15
     };
 
     for(int i = 0; i < 15; i++) {
@@ -73,17 +96,19 @@ MuxShield::MuxShield()
     _OUTMD = 8; 
 
     _IOS = {
-        39
-        40
-        41
+        35,
+        36,
+        37,
 
-        42
-        43
-        44
+        38,
+        39,
+        40,
 
-        45
-        46
-        47
+        41,
+        42,    
+        43,
+
+        // 44 - 46 are PWM, so save them for something else
 
         48,
         49,
@@ -97,7 +122,23 @@ MuxShield::MuxShield()
     _IO = {
         A0,
         A1,
-        A2
+        A2,
+        
+        A3,
+        A4,
+        A5,
+
+        A6,
+        A7,
+        A8,
+
+        A9,
+        A10,
+        A11,
+
+        A12,
+        A13,
+        A14
     };
 
     for(int i = 0; i < 15; i++) {
