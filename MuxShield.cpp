@@ -7,95 +7,19 @@
 #include "Arduino.h"
 #include "MuxShield.h"
 
-int _shiftReg[15][16];
+int _shiftReg[15][16] = {0};
 
-MuxShield::MuxShield(int S0, int S1, int S2, int S3, int OUTMD, 
-        int IOS1, int IOS2, int IOS3, 
-        int IOS4, int IOS5, int IOS6, 
-        int IOS7, int IOS8, int IOS9, 
-        int IOS10, int IOS11, int IOS12, 
-        int IOS13, int IOS14, int IOS15, 
-        int IO1, int IO2, int IO3,
-        int IO4, int IO5, int IO6,
-        int IO7, int IO8, int IO9,
-        int IO10, int IO11, int IO12,
-        int IO13, int IO14, int IO15
-        )
-{
-
-    _S = {
-        S0,
-        S1,
-        S2,
-        S3
-    };
-
-    _OUTMD = OUTMD;
-
-    _IOS = {
-        IOS1,
-        IOS2,
-        IOS3,
-        IOS4,
-        IOS5,
-        IOS6,
-        IOS7,
-        IOS8,
-        IOS9,
-        IOS10,
-        IOS11,
-        IOS12,
-        IOS13,
-        IOS14,
-        IOS15
-    };
-
-    _IO = {
-        IO1,
-        IO2,
-        IO3,
-        IO4,
-        IO5,
-        IO6,
-        IO7,
-        IO8,
-        IO9,
-        IO10,
-        IO11,
-        IO12,
-        IO13,
-        IO14,
-        IO15
-    };
-
-    for(int i = 0; i < 15; i++) {
-        _shiftReg[i] = {0};
-    }
-    
-    for(int i = 0; i < 4; i++) {
-        pinMode(_S[i], OUTPUT);
-    }
-
-    pinMode(_OUTMD,OUTPUT);
-    digitalWrite(_OUTMD,LOW);
-
-    for(int i = 0; i < 15; i++) {
-        pinMode(IOS[i], OUTPUT);
-    }
-}
-
-MuxShield::MuxShield()
-{
-    _S = {
+// Default pins
+int MuxShield::_S[4] = {
         2,
         4,
         6,
         7
     };
 
-    _OUTMD = 8; 
-
-    _IOS = {
+// Arduino Mega IO pins for software selecting Mux Mode in or out
+// these could all be eliminated if you want to do the solder jumper thing (see MuxShield manual)        
+int MuxShield::_IOS[15] = {
         35,
         36,
         37,
@@ -109,6 +33,7 @@ MuxShield::MuxShield()
         43,
 
         // 44 - 46 are PWM, so save them for something else
+        //  pin 11 is also PWM so let's not use that for digital writes
 
         48,
         49,
@@ -119,32 +44,40 @@ MuxShield::MuxShield()
         53
     };
 
-    _IO = {
-        A0,
-        A1,
-        A2,
-        
-        A3,
-        A4,
-        A5,
+// These are used to read and write to each mux
+int MuxShield::_IO[15] = {
+    // I messed up the wiring so not in order (faster to change code than wires)
 
-        A6,
-        A7,
-        A8,
+        // Mux 1
+        A12,
+        A13,
+        A14,
 
+        // Mux 2
         A9,
         A10,
         A11,
 
-        A12,
-        A13,
-        A14
+        // Mux 3
+        A6,
+        A7,
+        A8,
+
+        // Mux 4
+        A3,
+        A4,
+        A5,
+
+        // Mux 5
+        A0,
+        A1,
+        A2
     };
 
-    for(int i = 0; i < 15; i++) {
-        _shiftReg[i] = {0};
-    }
+int MuxShield::_OUTMD = 8;
 
+MuxShield::MuxShield()
+{
     for(int i = 0; i < 4; i++) {
         pinMode(_S[i], OUTPUT);
     }
@@ -153,7 +86,7 @@ MuxShield::MuxShield()
     digitalWrite(_OUTMD,LOW);
     
     for(int i = 0; i < 15; i++) {
-        pinMode(IOS[i], OUTPUT);
+        pinMode(_IOS[i], OUTPUT);
     }
 }
 
