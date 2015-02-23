@@ -115,6 +115,31 @@ void MuxShield::setMode(int mux, int mode)
     }
 }
 
+// <1 milliseconds to write to 16 pins
+void MuxShield::digitalWriteMS(int mux, int vals[])
+{
+    int i = mux - 1;
+    int sIdx = i % 3;
+    
+    digitalWrite(_S[3],LOW);                              //S3 here is LCLK
+    digitalWrite(_OUTMD,HIGH);                          //set to output mode
+
+
+    for (int j = 15; j >= 0; j--) {
+        digitalWrite(_S[sIdx], LOW);                  //S0 here is i/o1 _sclk
+        
+        _shiftReg[i][j] = vals[j];              //store value until updated again
+
+        digitalWrite(_IO[i], _shiftReg[i][j]);       //put value
+        digitalWrite(_S[sIdx], HIGH);                 //lactch in value
+    }
+
+    
+    digitalWrite(_S[3],HIGH);                     //latch in ALL values
+    digitalWrite(_OUTMD,LOW);                   //Exit output mode
+}
+
+// 6 milliseconds to write to 16 pins
 void MuxShield::digitalWriteMS(int mux, int chan, int val)
 {
     int i = mux - 1;

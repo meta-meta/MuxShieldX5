@@ -20,6 +20,7 @@ public:
     MuxShield();
     void setMode(int mux, int mode);
     void digitalWriteMS(int mux, int chan, int val);
+    void digitalWriteMS(int mux, int vals[16]);
     int digitalReadMS(int mux, int chan);
     int analogReadMS(int mux, int chan);
     
